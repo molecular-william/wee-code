@@ -65,14 +65,14 @@ def clean_up_seq_sim(string: str) -> str:
 
 
 def get_uniprot_info(uniprot_entries: pd.Series) -> pd.DataFrame:
-    """Given pd.Series of Uniprot accession codes, return Similarity, Subcellular Location, Function and Domains"""
+    """Given pd.Series of Uniprot accession codes, return Protein families, 3D structures, Transmembrane region, Subcellular Locations"""
     unique_entries = uniprot_entries.unique()
     length = len(unique_entries)
     batch_size = 1000
 
     for i in tqdm(range(length // batch_size + 1)):
         joined = ','.join(unique_entries[i * batch_size : (i+1) * batch_size])
-        r = get_url(f'{WEBSITE_API}/uniprotkb/accessions?accessions={joined}&fields=accession,cc_similarity,cc_subcellular_location,cc_function,ft_domain&format=tsv')
+        r = get_url(f'{WEBSITE_API}/uniprotkb/accessions?accessions={joined}&fields=accession,protein_families,structure_3d,ft_transmem,cc_subcellular_location&format=tsv')
         df = pd.read_csv(StringIO(r.text), sep='\t')
         if i == 0:
             final_df = df
