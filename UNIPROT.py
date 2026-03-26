@@ -68,7 +68,7 @@ def get_uniprot_info(uniprot_entries: pd.Series) -> pd.DataFrame:
     """Given pd.Series of Uniprot accession codes, return Protein families, 3D structures, Transmembrane region, Subcellular Locations"""
     unique_entries = uniprot_entries.unique()
     length = len(unique_entries)
-    batch_size = 1000
+    batch_size = 999
 
     for i in tqdm(range(length // batch_size + 1)):
         joined = ','.join(unique_entries[i * batch_size : (i+1) * batch_size])
